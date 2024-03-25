@@ -6,11 +6,25 @@ const getCachesUrl = async () => {
     return await cache.addAll(urlsToCache)
 }
 
-const fetchServing = async (request) => {
-    const match = await caches.match(request)
+const fetchServing = async (event) => {
     try {
-        return fetch(request)
-    } catch (error) {
+        const response = await caches.match(event)
+        let safeResponse = response
+
+        if (response === undefined) {
+            safeResponse = await fetch(event.request)
+        }
+
+        if (
+            event.request.url === 'https://jsonplaceholder.typicode.com/posts'
+        ) {
+            caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, safeResponse)
+            })
+        }
+
+        return safeResponse.clone()
+    } catch {
         return caches.match('offline.html')
     }
 }
@@ -20,26 +34,7 @@ this.addEventListener('install', (event) => {
 })
 
 this.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches
-            .match(event.request)
-            .then((response) =>
-                response !== undefined ? response : fetch(event.request)
-            )
-            .then((response) => {
-                if (
-                    event.request.url ===
-                    'https://jsonplaceholder.typicode.com/posts'
-                ) {
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, response)
-                    })
-                }
-
-                return response.clone()
-            })
-            .catch(() => caches.match('offline.html'))
-    )
+    event.respondWith(fetchServing(event))
 })
 
 this.addEventListener('activate', (event) => {
