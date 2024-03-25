@@ -47,13 +47,10 @@ const fetchPosts = async () => {
     document.querySelector('.list')!.innerHTML = list.join('')
 }
 
-await fetchPosts()
-
-//
-
 const deleteButton = document.querySelector('#delete')
 const addOneButton = document.querySelector('#add-one')
 const addManyButton = document.querySelector('#add-many')
+const fetchPostButton = document.querySelector('#fetch-list')
 
 const deleteCache = async () => {
     const cache = await caches.open(CACHE_NAME)
@@ -73,5 +70,6 @@ const addManyCache = async () => {
 deleteButton!.addEventListener('click', deleteCache)
 addOneButton!.addEventListener('click', addOneCache)
 addManyButton!.addEventListener('click', addManyCache)
+fetchPostButton!.addEventListener('click', fetchPosts)
 
 export {}

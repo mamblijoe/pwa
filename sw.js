@@ -21,13 +21,24 @@ this.addEventListener('install', (event) => {
 
 this.addEventListener('fetch', (event) => {
     event.respondWith(
-        caches.match(event.request).then(() => {
-            console.log('fetch', event)
-            return fetch(event.request).catch(() => {
-                console.log('ERROR', caches.match('offline.html'))
-                return caches.match('offline.html')
+        caches
+            .match(event.request)
+            .then((response) =>
+                response !== undefined ? response : fetch(event.request)
+            )
+            .then((response) => {
+                if (
+                    event.request.url ===
+                    'https://jsonplaceholder.typicode.com/posts'
+                ) {
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, response)
+                    })
+                }
+
+                return response.clone()
             })
-        })
+            .catch(() => caches.match('offline.html'))
     )
 })
 
