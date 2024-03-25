@@ -1,0 +1,21 @@
+{
+    "short_name": "App PWA",
+    "name": "App PWA",
+    "icons": [
+        {
+            "src": "/logo.png",
+            "type": "image/png",
+            "sizes": "1024x1024"
+        },
+        {
+            "src": "/maskable_icon.png",
+            "sizes": "196x196",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+}
