@@ -20,12 +20,7 @@ if ('serviceWorker' in navigator) {
     })
 }
 
-const getElement = (item: {
-    userId: string
-    id: string
-    title: string
-    body: string
-}) => {
+const getElement = (item) => {
     const { userId, id, title, body } = item
     return `<div style="border: 1px solid black; border-radius: 5px; padding: 5px; margin: 10px 0; background: #F3F3F3">
                 <div>User Id:${userId}</div>
@@ -44,13 +39,14 @@ const fetchPosts = async () => {
         list.push(getElement(item))
     }
 
-    document.querySelector('.list')!.innerHTML = list.join('')
+    document.querySelector('.list').innerHTML = list.join('')
 }
 
 const deleteButton = document.querySelector('#delete')
 const addOneButton = document.querySelector('#add-one')
 const addManyButton = document.querySelector('#add-many')
 const fetchPostButton = document.querySelector('#fetch-list')
+const installButton = document.querySelector('#install')
 
 const deleteCache = async () => {
     const cache = await caches.open(CACHE_NAME)
@@ -67,9 +63,32 @@ const addManyCache = async () => {
     await cache.addAll(urlsToCache)
 }
 
-deleteButton!.addEventListener('click', deleteCache)
-addOneButton!.addEventListener('click', addOneCache)
-addManyButton!.addEventListener('click', addManyCache)
-fetchPostButton!.addEventListener('click', fetchPosts)
+let deferredPrompt = null
+
+const savePromptEvent = (e) => {
+    e.preventDefault()
+    deferredPrompt = e
+    alert('Событие сохранено')
+}
+
+const installPWA = async () => {
+    deferredPrompt.prompt()
+    const { outcome } = await deferredPrompt.userChoice
+    deferredPrompt = null
+    // Act on the user's choice
+    if (outcome === 'accepted') {
+        console.log('User accepted the install prompt.')
+    } else if (outcome === 'dismissed') {
+        console.log('User dismissed the install prompt')
+    }
+}
+
+window.addEventListener('beforeinstallprompt', savePromptEvent)
+
+deleteButton.addEventListener('click', deleteCache)
+addOneButton.addEventListener('click', addOneCache)
+addManyButton.addEventListener('click', addManyCache)
+fetchPostButton.addEventListener('click', fetchPosts)
+installButton.addEventListener('click', installPWA)
 
 export {}
