@@ -39,6 +39,7 @@ const fetchPosts = async () => {
         list.push(getElement(item))
     }
 
+    await navigator.setAppBadge(list.length)
     document.querySelector('.list').innerHTML = list.join('')
 }
 
@@ -83,12 +84,21 @@ const installPWA = async () => {
     }
 }
 
-window.addEventListener('beforeinstallprompt', savePromptEvent)
+const detectPWA = () => {
+    let displayMode = 'browser tab'
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        displayMode = 'standalone'
+    }
+    // Log launch display mode to analytics
+    console.log('DISPLAY_MODE_LAUNCH:', displayMode)
+}
 
+window.addEventListener('beforeinstallprompt', savePromptEvent)
 deleteButton.addEventListener('click', deleteCache)
 addOneButton.addEventListener('click', addOneCache)
 addManyButton.addEventListener('click', addManyCache)
 fetchPostButton.addEventListener('click', fetchPosts)
 installButton.addEventListener('click', installPWA)
+window.addEventListener('DOMContentLoaded', detectPWA)
 
 export {}
