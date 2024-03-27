@@ -1,4 +1,5 @@
-const CACHE_NAME = 'pwa-cache-v1'
+const STATIC_CACHE_NAME = 'static-pwa-cache-v1'
+const DYNAMIC_CACHE_NAME = 'dynamic-pwa-cache-v1'
 const urlsToCache = ['index.html', 'offline.html']
 
 if ('serviceWorker' in navigator) {
@@ -50,17 +51,20 @@ const fetchPostButton = document.querySelector('#fetch-list')
 const installButton = document.querySelector('#install')
 
 const deleteCache = async () => {
-    const cache = await caches.open(CACHE_NAME)
-    await cache.delete('offline.html')
+    const staticCache = await caches.open(STATIC_CACHE_NAME)
+    const staticKeys = await staticCache.keys()
+    await Promise.all(
+        staticKeys.map((staticCacheItem) => staticCache.delete(staticCacheItem))
+    )
 }
 
 const addOneCache = async () => {
-    const cache = await caches.open(CACHE_NAME)
+    const cache = await caches.open(STATIC_CACHE_NAME)
     await cache.add('offline.html')
 }
 
 const addManyCache = async () => {
-    const cache = await caches.open(CACHE_NAME)
+    const cache = await caches.open(STATIC_CACHE_NAME)
     await cache.addAll(urlsToCache)
 }
 
@@ -69,7 +73,7 @@ let deferredPrompt = null
 const savePromptEvent = (e) => {
     e.preventDefault()
     deferredPrompt = e
-    alert('Событие сохранено')
+    console.log('Событие сохранено')
 }
 
 const installPWA = async () => {

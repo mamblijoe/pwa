@@ -1,8 +1,9 @@
-const CACHE_NAME = 'pwa-cache-v1'
+const STATIC_CACHE_NAME = 'static-pwa-cache-v1'
+const DYNAMIC_CACHE_NAME = 'dynamic-pwa-cache-v1'
 const urlsToCache = ['index.html', 'offline.html']
 
 const getCachesUrl = async () => {
-    const cache = await caches.open(CACHE_NAME)
+    const cache = await caches.open(STATIC_CACHE_NAME)
     return await cache.addAll(urlsToCache)
 }
 
@@ -18,14 +19,16 @@ const fetchServing = async (event) => {
         if (
             event.request.url === 'https://jsonplaceholder.typicode.com/posts'
         ) {
-            caches.open(CACHE_NAME).then((cache) => {
-                cache.put(event.request, safeResponse)
+            caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+                cache.put(event.request.url, safeResponse)
             })
         }
 
-        return safeResponse.clone()
+        return safeResponse
     } catch {
-        return caches.match('offline.html')
+        if (event.request.url.includes('.html')) {
+            return caches.match('offline.html')
+        }
     }
 }
 
@@ -39,7 +42,7 @@ this.addEventListener('fetch', (event) => {
 
 this.addEventListener('activate', (event) => {
     const cacheWhitelist = []
-    cacheWhitelist.push(CACHE_NAME)
+    cacheWhitelist.push(DYNAMIC_CACHE_NAME)
     event.waitUntil(
         caches.keys().then((cacheNames) =>
             Promise.all(
