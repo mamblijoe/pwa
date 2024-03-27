@@ -4,24 +4,62 @@
         <meta charset="UTF-8" />
         <link rel="manifest" href="./manifest.json" />
         <link rel="apple-touch-icon" href="./logo.png" />
+        <link href="./output.css" rel="stylesheet" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#4285f4" />
         <title>ONLINE PWA</title>
     </head>
     <body>
+        <h3 style="font-size: 50px; text-align: center">ONLINE PWA</h3>
+
         <div id="app">
-            <h3>Управление кешем</h3>
-            <button id="delete">Удалить кеш</button>
-            <button id="add-one">Добавить в кеш 1 файл</button>
-            <button id="add-many">Добавить в кеш множество файлов</button>
-            <hr />
-            <hr />
-            <button id="install">Установить</button>
-            <hr />
-            <h3 style="font-size: 50px; text-align: center">ONLINE PWA</h3>
-            <button id="fetch-list">Запросить посты</button>
-            <div class="list"></div>
-            <hr />
+            <button
+                id="delete"
+                type="button"
+                class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+            >
+                Удалить кеш
+            </button>
+            <button
+                id="add-one"
+                type="button"
+                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            >
+                Добавить в кеш 1 файл
+            </button>
+            <button
+                id="add-many"
+                type="button"
+                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            >
+                Добавить в кеш множество файлов
+            </button>
+            <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+            <button
+                id="install"
+                type="button"
+                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            >
+                Установить
+            </button>
+            <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+            <button
+                id="fetch-list"
+                type="button"
+                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+            >
+                Запросить посты
+            </button>
+            <div class="list grid gap-6 lg:grid-cols-3"></div>
+            <section
+                class="flex flex-col justify-center max-w-7xl px-4 py-10 mx-auto sm:px-6"
+            >
+                <div
+                    class="list grid grid-cols-1 sm:grid-cols-2 gap-4 px-1"
+                ></div>
+            </section>
+            <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
         </div>
         <script type="module" src="/src/main.js"></script>
     </body>

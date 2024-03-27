@@ -23,12 +23,44 @@ if ('serviceWorker' in navigator) {
 
 const getElement = (item) => {
     const { userId, id, title, body } = item
-    return `<div style="border: 1px solid black; border-radius: 5px; padding: 5px; margin: 10px 0; background: #F3F3F3">
-                <div>User Id:${userId}</div>
-                <div>Post Id:${id}</div>
-                <div>Title:${title}</div>
-                <div>Body:${body}</div>
-            </div>`
+    return `
+        <div
+                        class="p-4 flex flex-col justify-between border rounded-lg shadow-md"
+                    >
+                        <a
+                            class="block mb-2 text-xl font-semibold text-purple-700 hover:underline"
+                            href=""
+                        >
+                           ${title}
+                        </a>
+
+                        <div class="flex flex-wrap gap-2 text-sm text-gray-600">
+                            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                                Entertainment
+                            </span>
+                            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                                Sports
+                            </span>
+                            <span class="px-2 py-0.5 rounded-full bg-gray-100">
+                                Crime
+                            </span>
+                        </div>
+
+                        <p class="mt-2 text-gray-700">
+                          ${body}
+                        </p>
+
+                        <div
+                            class="flex items-center justify-between mt-4 text-sm"
+                        >
+                            <button class="text-gray-500">2 min read</button>
+
+                            <a href="" class="text-purple-700 hover:underline">
+                                Read more
+                            </a>
+                        </div>
+                    </div>
+`
 }
 
 const fetchPosts = async () => {
