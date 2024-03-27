@@ -51,11 +51,21 @@ const fetchPostButton = document.querySelector('#fetch-list')
 const installButton = document.querySelector('#install')
 
 const deleteCache = async () => {
-    const staticCache = await caches.open(STATIC_CACHE_NAME)
-    const staticKeys = await staticCache.keys()
-    await Promise.all(
-        staticKeys.map((staticCacheItem) => staticCache.delete(staticCacheItem))
-    )
+    // const staticCache = await caches.open(STATIC_CACHE_NAME)
+    // const dynamicCache = await caches.open(DYNAMIC_CACHE_NAME)
+    // const staticKeys = await staticCache.keys()
+    // const dynamicKeys = await dynamicCache.keys()
+    // await Promise.all(
+    //     staticKeys.map((staticCacheItem) => staticCache.delete(staticCacheItem))
+    // )
+    // await Promise.all(
+    //     dynamicKeys.map((dynamicCacheItem) =>
+    //         dynamicCache.delete(dynamicCacheItem)
+    //     )
+    // )
+
+    await caches.delete(STATIC_CACHE_NAME)
+    await caches.delete(DYNAMIC_CACHE_NAME)
 }
 
 const addOneCache = async () => {

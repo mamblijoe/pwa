@@ -20,11 +20,11 @@ const fetchServing = async (event) => {
             event.request.url === 'https://jsonplaceholder.typicode.com/posts'
         ) {
             caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
-                cache.put(event.request.url, safeResponse)
+                cache.put(event.request, safeResponse)
             })
         }
 
-        return safeResponse
+        return safeResponse.clone()
     } catch {
         if (event.request.url.includes('.html')) {
             return caches.match('offline.html')
@@ -40,14 +40,16 @@ this.addEventListener('fetch', (event) => {
     event.respondWith(fetchServing(event))
 })
 
+const hasCache = (cacheName) => {
+    return [STATIC_CACHE_NAME, DYNAMIC_CACHE_NAME].includes(cacheName)
+}
+
 this.addEventListener('activate', (event) => {
-    const cacheWhitelist = []
-    cacheWhitelist.push(DYNAMIC_CACHE_NAME)
     event.waitUntil(
         caches.keys().then((cacheNames) =>
             Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (!cacheWhitelist.includes(cacheName)) {
+                    if (!hasCache(cacheName)) {
                         return caches.delete(cacheName)
                     }
                 })
